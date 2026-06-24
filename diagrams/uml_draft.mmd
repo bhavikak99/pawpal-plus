@@ -1,0 +1,42 @@
+classDiagram
+    class Owner {
+        +String name
+        +String contactInfo
+        +List~Pet~ pets
+        +addPet(Pet pet)
+        +removePet(Pet pet)
+        +getPets(): List~Pet~
+    }
+
+    class Pet {
+        +String name
+        +String species
+        +int age
+        +List~Task~ tasks
+        +addTask(Task task)
+        +removeTask(Task task)
+        +getTasks(): List~Task~
+    }
+
+    class Task {
+        +String title
+        +String description
+        +int durationMinutes
+        +int priority
+        +DateTime? scheduledTime
+        +bool completed
+        +markComplete()
+        +isOverdue(): bool
+    }
+
+    class Scheduler {
+        +int availableMinutesPerDay
+        +generateDailySchedule(Owner owner, int availableMinutes): List~Task~
+        +prioritizeTasks(List~Task~ tasks): List~Task~
+        +assignTaskTime(Task task, DateTime startTime)
+    }
+
+    Owner "1" o-- "*" Pet : owns
+    Pet "1" o-- "*" Task : has
+    Scheduler ..> Owner : uses
+    Scheduler ..> Task : schedules
