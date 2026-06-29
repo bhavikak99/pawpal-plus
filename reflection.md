@@ -22,8 +22,7 @@ The initial design includes four main classes: Owner, Pet, Task and Scheduler. T
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+The scheduler currently detects conflicts only when two tasks are scheduled at exactly the same time. It does not check for overlapping task durations or travel time between tasks. This keeps the scheduling logic simple and easy to understand while still providing useful warnings when obvious scheduling conflicts occur.
 
 ---
 
