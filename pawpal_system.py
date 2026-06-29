@@ -109,7 +109,7 @@ class Scheduler:
     def prioritize_tasks(self, tasks: List[Task]) -> List[Task]:
         """Return tasks sorted by priority (higher first)."""
         # Higher priority value should come first
-        return sorted(tasks, key=lambda t: t.priority, reverse=True)
+        return sorted(tasks, key=lambda t: t.priority)
 
     def assign_task_time(self, task: Task, start_time: datetime.datetime) -> None:
         """Assign a scheduled start time to the task."""
