@@ -131,10 +131,27 @@ The automated test suite verifies the core scheduling functionality, including t
 
 | Feature           | Method(s)                                                                  | Notes                                                                               |
 | ----------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Priority scheduling | `Scheduler.prioritize_tasks()`                                           | Tasks are sorted by priority first (High → Medium → Low), then by scheduled time when priorities are equal. |
 | Task sorting      | `Scheduler.sort_by_time()` and `Scheduler.prioritize_tasks()`              | Tasks can be sorted chronologically or by priority.                                 |
 | Filtering         | `Scheduler.filter_tasks_by_status()` and `Scheduler.filter_tasks_by_pet()` | Tasks can be filtered by completion status or by pet name.                          |
 | Conflict handling | `Scheduler.detect_conflicts()`                                             | Displays warnings when two tasks are scheduled at the same time.                    |
 | Recurring tasks   | `Scheduler.create_next_recurring_task()`                                   | Daily and weekly tasks automatically generate the next occurrence after completion. |
+
+---
+
+## 💾 Data Persistence
+
+PawPal+ can save owner, pet, and task data to `data.json` so information can persist between runs.
+
+Persistence is handled with:
+
+- `Task.to_dict()` / `Task.from_dict()`
+- `Pet.to_dict()` / `Pet.from_dict()`
+- `Owner.to_dict()` / `Owner.from_dict()`
+- `Scheduler.save_to_json()`
+- `Scheduler.load_from_json()`
+
+The system converts custom Python objects into dictionaries before saving them as JSON, then reconstructs the objects when loading the file.
 
 ---
 

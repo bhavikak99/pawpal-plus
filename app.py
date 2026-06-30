@@ -15,6 +15,28 @@ PRIORITY_LABELS = {
     3: "Low",
 }
 
+def format_task_title(title: str) -> str:
+    """Add an emoji based on the task title."""
+    lower_title = title.lower()
+
+    if "walk" in lower_title:
+        return f"🐕 {title}"
+    if "feed" in lower_title or "breakfast" in lower_title or "dinner" in lower_title:
+        return f"🍽️ {title}"
+    if "medicine" in lower_title or "medication" in lower_title or "pill" in lower_title:
+        return f"💊 {title}"
+    if "groom" in lower_title or "bath" in lower_title:
+        return f"🛁 {title}"
+    if "vet" in lower_title or "vaccine" in lower_title or "doctor" in lower_title:
+        return f"🏥 {title}"
+
+    return f"🐾 {title}"
+
+
+def format_status(completed: bool) -> str:
+    """Return a user-friendly task status."""
+    return "✅ Complete" if completed else "⏳ Pending"
+
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -143,7 +165,7 @@ if pets:
             all_task_rows.append(
                 {
                     "pet": pet.name,
-                    "task": task.title,
+                    "task": format_task_title(task.title),
                     "duration": task.duration_minutes,
                     "priority": PRIORITY_LABELS[task.priority],
                     "completed": "Yes" if task.completed else "No",
@@ -164,10 +186,10 @@ if pets:
                     {
                         "time": task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time",
                         "pet": pet.name,
-                        "task": task.title,
+                        "task": format_task_title(task.title),
                         "duration": task.duration_minutes,
                         "priority": PRIORITY_LABELS[task.priority],
-                        "completed": "Yes" if task.completed else "No",
+                        "completed": format_status(task.completed),
                     }
                 )
 
@@ -227,7 +249,7 @@ if st.button("Generate schedule"):
         for task in schedule:
             time_text = task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time"
             st.write(
-                f"- {time_text} | {task.title}: {task.duration_minutes} min, priority {PRIORITY_LABELS[task.priority]}"
+                f"- {time_text} | {format_task_title(task.title)}: {task.duration_minutes} min, priority {PRIORITY_LABELS[task.priority]}"
             )
     else:
         st.warning("No tasks fit into the available time.")

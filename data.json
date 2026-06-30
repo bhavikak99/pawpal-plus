@@ -1,0 +1,56 @@
+{
+    "name": "Bhavika",
+    "contact_info": "bhavika@example.com",
+    "pets": [
+        {
+            "name": "Biscuit",
+            "species": "Dog",
+            "age": 3,
+            "tasks": [
+                {
+                    "title": "Morning Walk",
+                    "description": "Take Biscuit for a walk",
+                    "duration_minutes": 30,
+                    "priority": 3,
+                    "scheduled_time": "2026-06-30T09:00:00",
+                    "completed": false,
+                    "frequency": null
+                },
+                {
+                    "title": "Breakfast",
+                    "description": "Feed Biscuit",
+                    "duration_minutes": 15,
+                    "priority": 1,
+                    "scheduled_time": "2026-06-30T07:30:00",
+                    "completed": true,
+                    "frequency": "daily"
+                },
+                {
+                    "title": "Breakfast",
+                    "description": "Feed Biscuit",
+                    "duration_minutes": 15,
+                    "priority": 1,
+                    "scheduled_time": "2026-07-01T07:30:00",
+                    "completed": false,
+                    "frequency": "daily"
+                }
+            ]
+        },
+        {
+            "name": "Mochi",
+            "species": "Cat",
+            "age": 2,
+            "tasks": [
+                {
+                    "title": "Medication",
+                    "description": "Give Mochi medicine",
+                    "duration_minutes": 10,
+                    "priority": 2,
+                    "scheduled_time": "2026-06-30T09:00:00",
+                    "completed": true,
+                    "frequency": null
+                }
+            ]
+        }
+    ]
+}

@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Optional
 import datetime
-
+import json
 
 @dataclass
 class Task:
@@ -26,6 +26,33 @@ class Task:
         if self.completed:
             return False
         return self.scheduled_time < datetime.datetime.now()
+    
+    def to_dict(self) -> dict:
+        """Convert the task to a dictionary for JSON storage."""
+        return {
+            "title": self.title,
+            "description": self.description,
+            "duration_minutes": self.duration_minutes,
+            "priority": self.priority,
+            "scheduled_time": self.scheduled_time.isoformat() if self.scheduled_time else None,
+            "completed": self.completed,
+            "frequency": self.frequency,
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> "Task":
+        """Create a task from dictionary data."""
+        scheduled_time = data.get("scheduled_time")
+
+        return cls(
+            title=data["title"],
+            description=data.get("description"),
+            duration_minutes=data.get("duration_minutes", 0),
+            priority=data.get("priority", 0),
+            scheduled_time=datetime.datetime.fromisoformat(scheduled_time) if scheduled_time else None,
+            completed=data.get("completed", False),
+            frequency=data.get("frequency"),
+        )
 
 
 @dataclass
@@ -51,6 +78,25 @@ class Pet:
     def get_tasks(self) -> List[Task]:
         """Return a list of this pet's tasks."""
         return list(self.tasks)
+    
+    def to_dict(self) -> dict:
+        """Convert the pet to a dictionary for JSON storage."""
+        return {
+            "name": self.name,
+            "species": self.species,
+            "age": self.age,
+            "tasks": [task.to_dict() for task in self.tasks],
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Pet":
+        """Create a pet from dictionary data."""
+        return cls(
+            name=data["name"],
+            species=data["species"],
+            age=data["age"],
+            tasks=[Task.from_dict(task_data) for task_data in data.get("tasks", [])],
+        )
 
 
 class Owner:
@@ -74,6 +120,23 @@ class Owner:
     def get_pets(self) -> List[Pet]:
         """Return a list of the owner's pets."""
         return list(self.pets)
+    
+    def to_dict(self) -> dict:
+        """Convert the owner to a dictionary for JSON storage."""
+        return {
+            "name": self.name,
+            "contact_info": self.contact_info,
+            "pets": [pet.to_dict() for pet in self.pets],
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Owner":
+        """Create an owner from dictionary data."""
+        return cls(
+            name=data["name"],
+            contact_info=data["contact_info"],
+            pets=[Pet.from_dict(pet_data) for pet_data in data.get("pets", [])],
+        )
 
 
 class Scheduler:
@@ -108,9 +171,14 @@ class Scheduler:
         return schedule
 
     def prioritize_tasks(self, tasks: List[Task]) -> List[Task]:
-        """Return tasks sorted by priority (higher first)."""
-        # Higher priority value should come first
-        return sorted(tasks, key=lambda t: t.priority)
+        """Return tasks sorted by priority first, then scheduled time."""
+        return sorted(
+            tasks,
+            key=lambda task: (
+                task.priority,
+                task.scheduled_time or datetime.datetime.max,
+            ),
+        )
 
     def assign_task_time(self, task: Task, start_time: datetime.datetime) -> None:
         """Assign a scheduled start time to the task."""
@@ -163,6 +231,18 @@ class Scheduler:
             frequency=task.frequency,
         )
     
+    def save_to_json(self, owner: Owner, filename: str = "data.json") -> None:
+        """Save owner, pets, and tasks to a JSON file."""
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(owner.to_dict(), file, indent=4)
+
+    def load_from_json(self, filename: str = "data.json") -> Owner:
+        """Load owner, pets, and tasks from a JSON file."""
+        with open(filename, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        return Owner.from_dict(data)
+    
     def detect_conflicts(self, owner: Owner) -> List[str]:
         """Return warning messages for tasks scheduled at the same time."""
 
@@ -185,3 +265,23 @@ class Scheduler:
                     )
 
         return warnings
+    
+    def find_next_available_slot(
+        self,
+        owner: Owner,
+        start_time: datetime.datetime,
+        step_minutes: int = 30,
+    ) -> datetime.datetime:
+        """Return the next available time slot that does not conflict with existing task start times."""
+        scheduled_times = {
+            task.scheduled_time
+            for task in self.get_all_tasks(owner)
+            if task.scheduled_time is not None
+        }
+
+        candidate_time = start_time
+
+        while candidate_time in scheduled_times:
+            candidate_time += datetime.timedelta(minutes=step_minutes)
+
+        return candidate_time

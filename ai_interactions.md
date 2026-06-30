@@ -1,40 +1,47 @@
 # AI Interactions Log
 
-> **Stretch features only.** Only fill in the sections that apply to stretch features you attempted. If you did not attempt a stretch feature, leave its section blank or delete it. This file is not required for the core project.
+This document summarizes how AI tools were used throughout the PawPal+ project, including advanced features completed beyond the core requirements.
 
 ---
 
-## Agent Workflow (SF7)
+# Agent Workflow: Next Available Slot
 
-> Document your experience using an AI agent (e.g., Cursor Agent, Claude, Copilot) to make multi-step changes autonomously.
+### Task Given to the Agent
 
-**What task did you give the agent?**
+Implement an advanced scheduling feature that could suggest the next available time slot when an existing task time was already occupied.
 
-<!-- Describe the goal you asked the agent to accomplish -->
+### Files Modified
 
-**What did the agent do?**
+* `pawpal_system.py`
+* `main.py`
 
-<!-- List the steps the agent took (files edited, commands run, etc.) -->
+### What the Agent Completed
 
-**What did you have to verify or fix manually?**
+* Suggested creating a `Scheduler.find_next_available_slot()` method.
+* Implemented an algorithm that checks existing scheduled task start times and searches forward in 30-minute increments until an available slot is found.
+* Updated `main.py` to demonstrate the new algorithm in the CLI output.
 
-<!-- Describe anything the agent got wrong or that required human review -->
+### Manual Corrections
+
+I reviewed the generated algorithm to ensure it matched the overall scheduler design. I intentionally kept the implementation lightweight by checking only exact start-time conflicts rather than implementing more complex overlapping-duration scheduling.
 
 ---
 
-## Prompt Comparison (SF11)
+# Prompt Comparison
 
-> Compare two different prompts (or two different models) on the same task.
+### Task
 
-| | Option A | Option B |
-|-|----------|----------|
-| **Model / tool used** | | |
-| **Prompt** | | |
-| **Response summary** | | |
-| **What was useful** | | |
-| **Problems noticed** | | |
-| **Decision** | | |
+Design the recurring task scheduling logic for PawPal+.
 
-**Which approach did you use in your final implementation and why?**
+|                       | Option A                                                                                                                                                                                  | Option B                                                                                                            |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Model / Tool Used** | ChatGPT                                                                                                                                                                                   | GitHub Copilot                                                                                                      |
+| **Prompt**            | *How should I implement recurring daily and weekly tasks while keeping the scheduler simple and maintainable?*                                                                            | *Generate a recurring task implementation for PawPal+ based on my current classes.*                                 |
+| **Response Summary**  | Suggested creating a separate scheduler method to generate future recurring tasks while preserving completed task history.                                                                | Generated an initial implementation of recurring task logic based on the existing class structure.                  |
+| **What Was Useful**   | Explained why recurring behavior belongs in the Scheduler instead of the Task class and emphasized maintaining completed tasks as history.                                                | Quickly generated a working implementation and reduced repetitive coding.                                           |
+| **Problems Noticed**  | Some suggestions extended beyond the project requirements and needed to be simplified.                                                                                                    | The generated implementation still required manual review to ensure it matched the intended object-oriented design. |
+| **Decision**          | Used the architectural ideas from ChatGPT while also using Copilot to scaffold the implementation. The final code was simplified and adjusted manually to match the project requirements. | Used as implementation support rather than copied directly.                                                         |
 
-<!-- Your conclusion -->
+### Final Decision
+
+I combined suggestions from both ChatGPT and GitHub Copilot while making the final architectural decisions myself. I chose to keep recurring task generation inside the `Scheduler` class because recurring behavior is part of scheduling rather than an individual task's responsibility. I also simplified the implementation to support daily and weekly recurrence, which matched the scope of the project.

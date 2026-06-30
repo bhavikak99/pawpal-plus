@@ -58,6 +58,15 @@ biscuit_tasks = scheduler.filter_tasks_by_pet(owner, "Biscuit")
 tasks_by_time = scheduler.sort_by_time(all_tasks)
 today_schedule = scheduler.generate_daily_schedule(owner, 1440)
 
+next_slot = scheduler.find_next_available_slot(
+    owner,
+    today.replace(hour=9, minute=0, second=0, microsecond=0),
+)
+
+print("\nNext Available Slot")
+print("-------------------")
+print(next_slot.strftime("%I:%M %p"))
+
 print_tasks("All Tasks", all_tasks)
 print_tasks("Completed Tasks", completed_tasks)
 print_tasks("Incomplete Tasks", incomplete_tasks)
@@ -75,4 +84,12 @@ else:
     print("No conflicts found.")
     
 print_tasks("Today's Schedule", today_schedule)
+
+scheduler.save_to_json(owner, "data.json")
+loaded_owner = scheduler.load_from_json("data.json")
+
+print("\nPersistence Check")
+print("-----------------")
+print(f"Loaded owner: {loaded_owner.name}")
+print(f"Loaded pets: {len(loaded_owner.get_pets())}")
 
