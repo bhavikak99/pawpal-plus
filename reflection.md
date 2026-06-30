@@ -8,8 +8,7 @@ The initial design includes four main classes: Owner, Pet, Task and Scheduler. T
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+Initially, tasks only stored their duration and priority. During implementation, I added a scheduled time attribute so that tasks could be organized by time as well as priority. After making this change, I realized that multiple tasks could be assigned the same scheduled time, creating scheduling conflicts. To address this, I implemented conflict detection in the `Scheduler` class, which displays a warning whenever two tasks are scheduled for the same time. This made the scheduling system more practical and user friendly while keeping the overall design simple.
 
 ---
 
@@ -17,8 +16,7 @@ The initial design includes four main classes: Owner, Pet, Task and Scheduler. T
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+My scheduler considers several constraints, including scheduled time, task priority, completion status and the amount of time available during the day. I considered scheduled time to be the most important because it determines when a task should be performed and allows the system to sort tasks chronologically and detect scheduling conflicts. Priority is then used to ensure that more important tasks are completed first, while completed tasks are excluded from the daily schedule.
 
 **b. Tradeoffs**
 
@@ -30,13 +28,12 @@ The scheduler currently detects conflicts only when two tasks are scheduled at e
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used AI for brainstorming system design ideas, generating an initial UML diagram and creating class skeletons. It was also very helpful for explaining error messages, debugging my code and helping me understand Git commands and the purpose of different Python functions. The most helpful prompts were those asking the AI to explain why an error occurred or to suggest ways to improve the design while keeping the implementation simple. AI helped me learn the reasoning behind the code instead of only providing solutions.
+
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+One example where I did not accept an AI suggestion immediately was when deciding how to display the pet name for each task. One option was to store the pet's name directly inside every `Task` object. After thinking through the design, I decided to keep the existing relationship where each `Pet` owns its tasks and retrieve the pet name when displaying the table. This avoided duplicating data and kept the object-oriented design cleaner. I evaluated the suggestion by considering how future changes would affect the system.
 
 ---
 
@@ -44,13 +41,11 @@ The scheduler currently detects conflicts only when two tasks are scheduled at e
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested the core behaviors of the PawPal+ system, including task completion, adding tasks to a pet, sorting tasks by scheduled time, creating recurring daily tasks, and detecting scheduling conflicts. These tests were important because they verified that the main scheduling features worked correctly and ensured that changes to one part of the system did not break other functionality. Running automated tests also increased my confidence that the application behaved as expected.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I am confident that the scheduler works correctly for the features implemented because all five automated tests pass successfully and I also verified the application's behavior through the Streamlit interface and the CLI demo. If I had more time, I would test additional edge cases such as overlapping task durations, larger numbers of pets and tasks, more complex recurring schedules and editing or deleting scheduled tasks after they have been created.
 
 ---
 
@@ -58,12 +53,12 @@ The scheduler currently detects conflicts only when two tasks are scheduled at e
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+The part of the project I am most satisfied with is successfully connecting the backend logic to the Streamlit user interface. It was rewarding to see the application evolve from a UML diagram into a fully working system where users can add pets, create tasks, generate schedules, detect conflicts and mark tasks as complete.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+If I were to continue developing this project, I would improve the scheduler by supporting overlapping duration conflict detection instead of only exact time matches. I would also allow users to edit or delete existing tasks, support more recurring schedule options and enhance the interface with additional filtering and calendar-style views.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+One of the biggest lessons I learned is that designing a system requires making thoughtful architectural decisions before writing code. AI was extremely useful for brainstorming ideas, explaining concepts, debugging errors and generating initial implementations, but I still needed to evaluate its suggestions and decide what best fit my own design. I learned that the developer remains the lead architect, while AI works best as a collaborative assistant.

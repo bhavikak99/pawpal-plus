@@ -1,5 +1,5 @@
+import datetime
 import streamlit as st
-
 from pawpal_system import Owner, Pet, Scheduler, Task
 
 
@@ -7,6 +7,12 @@ PRIORITY_MAP = {
     "High": 1,
     "Medium": 2,
     "Low": 3,
+}
+
+PRIORITY_LABELS = {
+    1: "High",
+    2: "Medium",
+    3: "Low",
 }
 
 
@@ -108,6 +114,7 @@ if pets:
         task_title = st.text_input("Task title", placeholder="Enter task title")
         task_description = st.text_input("Task description", placeholder="Enter task description")
         duration = st.number_input("Duration (minutes)", min_value=1, max_value=240, value=20)
+        task_time = st.time_input("Scheduled time",value=datetime.time(9, 0))
         priority_label = st.selectbox("Priority", ["High", "Medium", "Low"])
         submitted_task = st.form_submit_button("Add task")
 
@@ -115,10 +122,15 @@ if pets:
             if not task_title:
                 st.error("Please enter a task title.")
             else:
+                scheduled_datetime = datetime.datetime.combine(
+                    datetime.date.today(),
+                    task_time,
+                )
                 task = Task(
                     title=task_title,
                     description=task_description,
                     duration_minutes=int(duration),
+                    scheduled_time=scheduled_datetime,
                     priority=PRIORITY_MAP[priority_label],
                 )
                 selected_pet.add_task(task)
@@ -133,14 +145,33 @@ if pets:
                     "pet": pet.name,
                     "task": task.title,
                     "duration": task.duration_minutes,
-                    "priority": task.priority,
+                    "priority": PRIORITY_LABELS[task.priority],
                     "completed": "Yes" if task.completed else "No",
+                    "time": task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time",
                 }
             )
 
     if all_task_rows:
-        st.write("Current tasks:")
-        st.table(all_task_rows)
+        st.write("Current tasks sorted by time:")
+
+        sorted_task_rows = []
+
+        for pet in pets:
+            pet_tasks = st.session_state.scheduler.sort_by_time(pet.get_tasks())
+
+            for task in pet_tasks:
+                sorted_task_rows.append(
+                    {
+                        "time": task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time",
+                        "pet": pet.name,
+                        "task": task.title,
+                        "duration": task.duration_minutes,
+                        "priority": PRIORITY_LABELS[task.priority],
+                        "completed": "Yes" if task.completed else "No",
+                    }
+                )
+
+        st.table(sorted_task_rows)
 
         incomplete_tasks = []
         for pet in pets:
@@ -153,9 +184,10 @@ if pets:
                 "Choose a task to mark complete",
                 range(len(incomplete_tasks)),
                 format_func=lambda i: f"{incomplete_tasks[i][0].name}: {incomplete_tasks[i][1].title}",
+                key=f"mark_complete_selectbox_{len(incomplete_tasks)}",
             )
 
-            if st.button("Mark complete"):
+            if st.button("Mark complete", key="mark_complete_button"):
                 incomplete_tasks[task_to_complete][1].mark_complete()
                 st.success("Task marked complete.")
                 st.rerun()
@@ -182,11 +214,20 @@ if st.button("Generate schedule"):
         int(available_minutes),
     )
 
+    conflicts = st.session_state.scheduler.detect_conflicts(
+        st.session_state.owner
+    )
+
+    if conflicts:
+        for warning in conflicts:
+            st.warning(warning)
+
     if schedule:
         st.success("Today's Schedule")
         for task in schedule:
+            time_text = task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time"
             st.write(
-                f"- {task.title}: {task.duration_minutes} min, priority {task.priority}"
+                f"- {time_text} | {task.title}: {task.duration_minutes} min, priority {PRIORITY_LABELS[task.priority]}"
             )
     else:
         st.warning("No tasks fit into the available time.")
