@@ -168,7 +168,7 @@ if pets:
                     "task": format_task_title(task.title),
                     "duration": task.duration_minutes,
                     "priority": PRIORITY_LABELS[task.priority],
-                    "completed": "Yes" if task.completed else "No",
+                    "completed": format_status(task.completed),
                     "time": task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time",
                 }
             )

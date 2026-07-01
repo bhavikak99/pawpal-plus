@@ -12,7 +12,7 @@
                     "description": "Take Biscuit for a walk",
                     "duration_minutes": 30,
                     "priority": 3,
-                    "scheduled_time": "2026-06-30T09:00:00",
+                    "scheduled_time": "2026-07-01T09:00:00",
                     "completed": false,
                     "frequency": null
                 },
@@ -21,7 +21,7 @@
                     "description": "Feed Biscuit",
                     "duration_minutes": 15,
                     "priority": 1,
-                    "scheduled_time": "2026-06-30T07:30:00",
+                    "scheduled_time": "2026-07-01T07:30:00",
                     "completed": true,
                     "frequency": "daily"
                 },
@@ -30,7 +30,7 @@
                     "description": "Feed Biscuit",
                     "duration_minutes": 15,
                     "priority": 1,
-                    "scheduled_time": "2026-07-01T07:30:00",
+                    "scheduled_time": "2026-07-02T07:30:00",
                     "completed": false,
                     "frequency": "daily"
                 }
@@ -46,7 +46,7 @@
                     "description": "Give Mochi medicine",
                     "duration_minutes": 10,
                     "priority": 2,
-                    "scheduled_time": "2026-06-30T09:00:00",
+                    "scheduled_time": "2026-07-01T09:00:00",
                     "completed": true,
                     "frequency": null
                 }
