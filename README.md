@@ -155,6 +155,20 @@ The system converts custom Python objects into dictionaries before saving them a
 
 ---
 
+## 🎨 Professional UI Formatting
+
+PawPal+ includes user-friendly formatting to make tasks easier to read in the Streamlit interface.
+
+Formatting features include:
+
+- Emojis based on task type, such as 🐕 for walks, 🍽️ for feeding, 💊 for medication, 🛁 for grooming, and 🏥 for vet-related tasks.
+- Clear task statuses using ✅ Complete and ⏳ Pending.
+- Chronological task tables that show time, pet, task, duration, priority, and completion status.
+
+These formatting helpers are implemented in `app.py` using `format_task_title()` and `format_status()`.
+
+---
+
 # 📸 Demo Walkthrough
 
 1. Enter the owner's name and contact information, then save the details.
