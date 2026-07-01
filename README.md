@@ -1,94 +1,119 @@
-# PawPal+ (Module 2 Project)
+# 🐾 PawPal+
 
-You are building **PawPal+**, a Streamlit app that helps a pet owner plan care tasks for their pet.
+PawPal+ is a Streamlit-based pet care management application that helps pet owners organize their pets' daily care routines. The application allows users to manage multiple pets, schedule care tasks, prioritize activities, detect scheduling conflicts, and generate an organized daily schedule.
 
-## Scenario
-
-A busy pet owner needs help staying consistent with pet care. They want an assistant that can:
-
-* Track pet care tasks (walks, feeding, medication, enrichment, grooming, etc.)
-* Consider constraints (time available, priority, owner preferences)
-* Produce a daily plan and explain why it chose that plan.
-
-Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
+This project was built using Python, Object-Oriented Programming (OOP), and Streamlit while demonstrating scheduling algorithms, automated testing, JSON data persistence, and AI-assisted software development.
 
 ---
 
-## What you will build
+## ✨ Features
 
-Your final app should:
-
-* Let a user enter basic owner and pet information.
-* Let a user add and manage pet care tasks.
-* Generate a daily schedule based on task priority and available time.
-* Display the schedule clearly while highlighting scheduling conflicts.
-* Include automated tests for the core scheduling behaviors.
+- 🐶 Manage multiple pets
+- 📝 Add and organize pet care tasks
+- ⏰ Schedule tasks with specific times
+- ⭐ Priority-based scheduling
+- 📅 Chronological task sorting
+- ⚠️ Scheduling conflict detection
+- 🔁 Daily and weekly recurring tasks
+- ✅ Mark tasks as completed
+- 💾 Save and load data using JSON
+- 🧪 Automated testing with Pytest
+- 🎨 Streamlit user interface with task formatting and emojis
 
 ---
 
-# Getting Started
+## 🛠️ Technologies Used
 
-## Setup
+- Python 3
+- Streamlit
+- Pytest
+- JSON
+- Object-Oriented Programming (OOP)
+- Git & GitHub
+
+---
+
+## 🚀 Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/bhavikak99/pawpal-plus.git
+cd pawpal-plus
+```
+
+### Install dependencies
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Suggested Workflow
+### Run the application
 
-1. Read the scenario carefully and identify requirements.
-2. Draft a UML diagram.
-3. Create Python class stubs.
-4. Implement scheduling logic.
-5. Test the system.
-6. Connect the backend to the Streamlit UI.
-7. Refine the UML to match the final implementation.
+```bash
+streamlit run app.py
+```
+
+### Run the automated tests
+
+```bash
+python3 -m pytest
+```
 
 ---
 
 # 🖥️ Sample Output
 
 ```text
+Next Available Slot
+-------------------
+09:30 AM
+
 All Tasks
 ---------
-- 09:00 AM | Morning Walk | 30 min | priority High | incomplete
-- 07:30 AM | Breakfast | 15 min | priority High | complete
-- 07:30 AM | Breakfast | 15 min | priority High | incomplete
-- 09:00 AM | Medication | 10 min | priority Medium | complete
+- 09:00 AM | 🐕 Morning Walk | 30 min | Priority: Low | ⏳ Pending
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ✅ Complete
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ⏳ Pending
+- 09:00 AM | 💊 Medication | 10 min | Priority: Medium | ✅ Complete
 
 Completed Tasks
 ---------------
-- 07:30 AM | Breakfast | 15 min | priority High | complete
-- 09:00 AM | Medication | 10 min | priority Medium | complete
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ✅ Complete
+- 09:00 AM | 💊 Medication | 10 min | Priority: Medium | ✅ Complete
 
 Incomplete Tasks
 ----------------
-- 09:00 AM | Morning Walk | 30 min | priority Low | incomplete
-- 07:30 AM | Breakfast | 15 min | priority High | incomplete
+- 09:00 AM | 🐕 Morning Walk | 30 min | Priority: Low | ⏳ Pending
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ⏳ Pending
 
 Biscuit's Tasks
 ---------------
-- 09:00 AM | Morning Walk | 30 min | priority Low | incomplete
-- 07:30 AM | Breakfast | 15 min | priority High | complete
-- 07:30 AM | Breakfast | 15 min | priority High | incomplete
+- 09:00 AM | 🐕 Morning Walk | 30 min | Priority: Low | ⏳ Pending
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ✅ Complete
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ⏳ Pending
 
 Tasks Sorted by Time
 --------------------
-- 07:30 AM | Breakfast | 15 min | priority High | complete
-- 09:00 AM | Morning Walk | 30 min | priority Low | incomplete
-- 09:00 AM | Medication | 10 min | priority Medium | complete
-- 07:30 AM | Breakfast | 15 min | priority High | incomplete
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ✅ Complete
+- 09:00 AM | 🐕 Morning Walk | 30 min | Priority: Low | ⏳ Pending
+- 09:00 AM | 💊 Medication | 10 min | Priority: Medium | ✅ Complete
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ⏳ Pending
 
 Conflict Warnings
 -----------------
-Conflict: 'Morning Walk' and 'Medication' are both scheduled at 09:00 AM.
+⚠️ Conflict: 'Morning Walk' and 'Medication' are both scheduled at 09:00.
 
 Today's Schedule
 ----------------
-- 07:30 AM | Breakfast | 15 min | priority High
-- 09:00 AM | Morning Walk | 30 min | priority Low
+- 07:30 AM | 🍽️ Breakfast | 15 min | Priority: High | ⏳ Pending
+- 09:00 AM | 🐕 Morning Walk | 30 min | Priority: Low | ⏳ Pending
+
+Persistence Check
+-----------------
+Loaded owner: Bhavika
+Loaded pets: 2
 ```
 
 ---

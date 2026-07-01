@@ -2,6 +2,32 @@ import datetime
 
 from pawpal_system import Owner, Pet, Scheduler, Task
 
+PRIORITY_LABELS = {
+    1: "High",
+    2: "Medium",
+    3: "Low",
+}
+
+
+def format_task_title(title: str) -> str:
+    lower_title = title.lower()
+
+    if "walk" in lower_title:
+        return f"🐕 {title}"
+    if "feed" in lower_title or "breakfast" in lower_title or "dinner" in lower_title:
+        return f"🍽️ {title}"
+    if "medicine" in lower_title or "medication" in lower_title or "pill" in lower_title:
+        return f"💊 {title}"
+    if "groom" in lower_title or "bath" in lower_title:
+        return f"🛁 {title}"
+    if "vet" in lower_title or "vaccine" in lower_title or "doctor" in lower_title:
+        return f"🏥 {title}"
+
+    return f"🐾 {title}"
+
+
+def format_status(completed: bool) -> str:
+    return "✅ Complete" if completed else "⏳ Pending"
 
 def print_tasks(title, tasks):
     print(f"\n{title}")
@@ -12,13 +38,15 @@ def print_tasks(title, tasks):
         return
 
     for task in tasks:
-        time_text = task.scheduled_time.strftime("%H:%M") if task.scheduled_time else "No time"
-        status = "complete" if task.completed else "incomplete"
-        print(
-            f"- {time_text} | {task.title} | "
-            f"{task.duration_minutes} min | priority {task.priority} | {status}"
-        )
+        time_text = task.scheduled_time.strftime("%I:%M %p") if task.scheduled_time else "No time"
+        status = format_status(task.completed)
+        priority = PRIORITY_LABELS.get(task.priority, "Unknown")
+        task_title = format_task_title(task.title)
 
+        print(
+            f"- {time_text} | {task_title} | "
+            f"{task.duration_minutes} min | Priority: {priority} | {status}"
+        )
 
 owner = Owner("Bhavika", "bhavika@example.com")
 
@@ -79,7 +107,7 @@ print("\nConflict Warnings")
 print("-----------------")
 if conflicts:
     for warning in conflicts:
-        print(warning)
+        print(f"⚠️ {warning}")
 else:
     print("No conflicts found.")
     
